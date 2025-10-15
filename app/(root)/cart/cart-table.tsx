@@ -136,7 +136,7 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                 ) : (
                   <ArrowRight className="s-4" />
                 )}
-                Procced to Checkout
+                Proceed to Checkout
               </Button>
             </CardContent>
           </Card>
