@@ -11,6 +11,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Pagination from "@/components/shared/pagination";
+import { requireAdmin } from "@/lib/auth-guard";
+import DeleteDialog from "@/components/shared/delete-dialog";
 
 const AdminProductsPage = async (props: {
   searchParams: Promise<{
@@ -19,6 +21,7 @@ const AdminProductsPage = async (props: {
     category: string;
   }>;
 }) => {
+  await requireAdmin();
   const searchParams = await props.searchParams;
 
   const page = Number(searchParams.page) || 1;
@@ -67,13 +70,13 @@ const AdminProductsPage = async (props: {
                 <Button asChild variant="outline" size="sm">
                   <Link href={`/admin/products/${product.id}`}>Edit</Link>
                 </Button>
-                {/* DELETE */}
+                <DeleteDialog id={product.id} action={deleteProduct} />
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-      {products?.totalPages && products.totalPages > 1 && (
+      {products.totalPages > 1 && (
         <Pagination page={page} totalPages={products.totalPages} />
       )}
     </div>

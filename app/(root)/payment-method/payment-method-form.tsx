@@ -27,6 +27,7 @@ const PaymentMethodForm = ({
   preferredPaymentMethod: string | null;
 }) => {
   const router = useRouter();
+  // console.log(PAYMENT_METHODS);
 
   const form = useForm<z.infer<typeof paymentMethodSchema>>({
     resolver: zodResolver(paymentMethodSchema),
