@@ -36,6 +36,7 @@ model User {
   role          String    @default("user")
   address       Json?     @db.Json
   paymentMethod String?
+  createdAt     DateTime  @default(now()) @db.Timestamp(6)
   accounts      Account[]
   sessions      Session[]
   Cart          Cart[]

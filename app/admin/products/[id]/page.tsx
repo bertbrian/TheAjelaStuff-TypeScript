@@ -15,7 +15,6 @@ const AdminProductUpdatePage = async (props: {
   const { id } = await props.params;
 
   const product = await getProductById(id);
-
   if (!product) return notFound();
 
   return (
