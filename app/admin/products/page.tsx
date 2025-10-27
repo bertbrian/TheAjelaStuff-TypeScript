@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getAllProducts, deleteProduct } from "@/lib/actions/product.action";
-import { formatCurrency, formatId } from "@/lib/utils";
+import { formatId, formatNumber } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -70,7 +70,7 @@ const AdminProductsPage = async (props: {
               <TableCell>{formatId(product.id)}</TableCell>
               <TableCell>{product.name}</TableCell>
               <TableCell className="text-right">
-                {formatCurrency(product.price)}
+                {formatNumber(Number(product.price))}
               </TableCell>
               <TableCell>{product.category}</TableCell>
               <TableCell>{product.stock}</TableCell>

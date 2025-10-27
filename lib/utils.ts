@@ -18,6 +18,7 @@ export function formatNumberWithDecimal(num: number): string {
 }
 
 // Format errors
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function formatError(error: any) {
   if (error.name === "ZodError") {
     // Handle Zod error
@@ -52,8 +53,8 @@ export function round2(value: number | string) {
   }
 }
 
-const CURRENCY_FORMATTER = new Intl.NumberFormat("en-US", {
-  currency: "USD",
+const CURRENCY_FORMATTER = new Intl.NumberFormat("id-ID", {
+  currency: "IDR",
   style: "currency",
   minimumFractionDigits: 2,
 });
@@ -70,7 +71,7 @@ export function formatCurrency(amount: number | string | null) {
 }
 
 // Format Number
-const NUMBER_FORMATTER = new Intl.NumberFormat("en-US");
+const NUMBER_FORMATTER = new Intl.NumberFormat("id-ID");
 
 export function formatNumber(number: number) {
   return NUMBER_FORMATTER.format(number);

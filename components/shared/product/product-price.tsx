@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn, formatNumber } from "@/lib/utils";
 
 const ProductPrice = ({
   value,
@@ -13,9 +13,9 @@ const ProductPrice = ({
   const [intValue, floatValue] = stringValue.split(".");
   return (
     <p className={cn("text-2xl", className)}>
-      <span className="text-xs align-super">IDR</span>
-      {intValue}
-      <span className="text-xs align-super">.{floatValue}</span>
+      <span className="text-xs">IDR </span>
+      {formatNumber(Number(intValue))}
+      {/* <span className="text-xs align-super">.{floatValue}</span> */}
     </p>
   );
 };
