@@ -179,6 +179,25 @@ export async function updateProduct(data: z.infer<typeof updateProductSchema>) {
   }
 }
 
+// Duplicate a product
+export async function duplicateProduct(
+  data: z.infer<typeof insertProductSchema>
+) {
+  try {
+    const product = insertProductSchema.parse(data);
+    await prisma.product.create({ data: product });
+
+    revalidatePath("/admin/products");
+
+    return {
+      success: true,
+      message: "Product duplicated",
+    };
+  } catch (error) {
+    return { success: false, message: formatError(error) };
+  }
+}
+
 // Get all categories
 export async function getAllCategories() {
   const data = await prisma.product.groupBy({

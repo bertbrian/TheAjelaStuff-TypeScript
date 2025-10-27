@@ -25,13 +25,14 @@ import { UploadButton } from "@/lib/uploadthing";
 import { Card, CardContent } from "../ui/card";
 import Image from "next/image";
 import { Checkbox } from "../ui/checkbox";
+import { useEffect } from "react";
 
 const ProductForm = ({
   type,
   product,
   productId,
 }: {
-  type: "Create" | "Update";
+  type: "Create" | "Update" | "Duplicate";
   product?: Product;
   productId?: string;
 }) => {
@@ -40,17 +41,20 @@ const ProductForm = ({
   const form = useForm<z.infer<typeof insertProductSchema>>({
     resolver:
       type === "Update"
-        ? (zodResolver(updateProductSchema) as any)
+        ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (zodResolver(updateProductSchema) as any)
         : zodResolver(insertProductSchema),
     defaultValues:
-      product && type === "Update" ? product : productDefaultValues,
+      product && (type === "Update" || type === "Duplicate")
+        ? product
+        : productDefaultValues,
   });
 
   const onSubmit: SubmitHandler<z.infer<typeof insertProductSchema>> = async (
     values
   ) => {
     // On Update
-    if (type === "Create") {
+    if (type === "Create" || type === "Duplicate") {
       const res = await createProduct(values);
 
       if (!res.success) {
@@ -78,9 +82,14 @@ const ProductForm = ({
     }
   };
 
+  const name = form.watch("name");
   const images = form.watch("images");
   const isFeatured = form.watch("isFeatured");
   const banner = form.watch("banner");
+
+  useEffect(() => {
+    form.setValue("slug", slugify(name || "", { lower: true }));
+  }, [name, form]);
 
   return (
     <Form {...form}>
@@ -124,22 +133,19 @@ const ProductForm = ({
               >;
             }) => (
               <FormItem className="w-full">
-                <FormLabel>Name</FormLabel>
+                <FormLabel>Slug</FormLabel>
                 <FormControl>
                   <div className="relative">
-                    <Input placeholder="Enter slug" {...field} />
+                    <Input readOnly={true} {...field} className="cursor-auto" />
+                    {/*
                     <Button
                       type="button"
                       className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-1 mt-2"
-                      onClick={() => {
-                        form.setValue(
-                          "slug",
-                          slugify(form.getValues("name"), { lower: true })
-                        );
-                      }}
+                      onClick={}
                     >
                       Generate
                     </Button>
+                    */}
                   </div>
                 </FormControl>
                 <FormMessage />
@@ -354,7 +360,9 @@ const ProductForm = ({
             disabled={form.formState.isSubmitting}
             className="button col-span-2 w-full"
           >
-            {form.formState.isSubmitting ? "Submitting" : `${type} Product`}
+            {form.formState.isSubmitting
+              ? "Submitting"
+              : `${type === "Duplicate" ? "Create" : type} Product`}
           </Button>
         </div>
       </form>
