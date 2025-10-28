@@ -105,15 +105,15 @@ export const formatDateTime = (dateString: Date) => {
     hour12: true,
   };
   const formattedDateTime: string = new Date(dateString).toLocaleString(
-    "en-US",
+    "id-ID",
     dateTimeOptions
   );
   const formattedDate: string = new Date(dateString).toLocaleString(
-    "en-US",
+    "id-ID",
     dateOptions
   );
   const formattedTime: string = new Date(dateString).toLocaleString(
-    "en-US",
+    "id-ID",
     timeOptions
   );
   return {
