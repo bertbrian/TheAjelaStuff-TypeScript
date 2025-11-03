@@ -2,7 +2,8 @@ import NextAuth from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/db/prisma";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { compare } from "./lib/encrypt";
+import { compareSync } from "bcrypt-ts-edge";
+
 import { authConfig } from "./auth.config";
 import { cookies } from "next/headers";
 
@@ -31,23 +32,30 @@ export const config = {
             email: credentials.email as string,
           },
         });
+        console.log("User found:", user);
 
         // Check if user exists and if the password matches
         if (user && user.password) {
-          const isMatch = await compare(
+          const isMatch = compareSync(
             credentials.password as string,
             user.password
           );
+          console.log("isMatch is ", isMatch);
 
           // If password is correct, return user
           if (isMatch) {
+            console.log("Password match!");
             return {
               id: user.id,
               name: user.name,
               email: user.email,
               role: user.role,
             };
+          } else {
+            console.log("Password mismatch.");
           }
+        } else {
+          console.log("User not found or password is missing.");
         }
         // If user does not exist or password does not match return null
         return null;
@@ -56,6 +64,7 @@ export const config = {
   ],
   callbacks: {
     ...authConfig.callbacks,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async session({ session, user, trigger, token }: any) {
       // Set the user ID from the token
       session.user.id = token.sub;
@@ -67,6 +76,7 @@ export const config = {
 
       return session;
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async jwt({ token, user, trigger, session }: any) {
       // Assign user field to token
       if (user) {

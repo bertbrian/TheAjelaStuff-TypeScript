@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 export const authConfig = {
   providers: [],
   callbacks: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     authorized({ request, auth }: any) {
       // Array of regex patterns of paths we want to protect
       const protectedPaths = [
