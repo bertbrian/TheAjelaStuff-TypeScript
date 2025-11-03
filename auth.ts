@@ -32,7 +32,6 @@ export const config = {
             email: credentials.email as string,
           },
         });
-        console.log("User found:", user);
 
         // Check if user exists and if the password matches
         if (user && user.password) {
@@ -40,22 +39,16 @@ export const config = {
             credentials.password as string,
             user.password
           );
-          console.log("isMatch is ", isMatch);
 
           // If password is correct, return user
           if (isMatch) {
-            console.log("Password match!");
             return {
               id: user.id,
               name: user.name,
               email: user.email,
               role: user.role,
             };
-          } else {
-            console.log("Password mismatch.");
           }
-        } else {
-          console.log("User not found or password is missing.");
         }
         // If user does not exist or password does not match return null
         return null;
