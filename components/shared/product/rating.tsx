@@ -36,7 +36,6 @@ const Rating = ({ value, caption }: { value: number; caption?: string }) => {
         {value >= 4 ? <Full /> : value >= 3.5 ? <Half /> : <Empty />}
         {value >= 5 ? <Full /> : value >= 4.5 ? <Half /> : <Empty />}
       </div>
-
       {caption && <span className="text-sm">{caption}</span>}
     </div>
   );

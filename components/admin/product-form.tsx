@@ -253,14 +253,21 @@ const ProductForm = ({
                   <CardContent className="space-y-2 mt-2 min-h-48">
                     <div className="flex-start space-x-2">
                       {images.map((image: string) => (
-                        <Image
-                          key={image}
-                          src={image}
-                          alt="product image"
-                          className="s-20 object-cover object-center rounded-sm"
-                          width={100}
-                          height={100}
-                        />
+                        <div key={image}>
+                          <Image
+                            src={image}
+                            alt="product image"
+                            className="s-20 object-cover object-center rounded-sm"
+                            width={100}
+                            height={100}
+                          />
+                          <Button
+                            variant="destructive"
+                            className="cursor-pointer mt-2 w-full"
+                          >
+                            Delete
+                          </Button>
+                        </div>
                       ))}
                     </div>
                     <FormControl>
